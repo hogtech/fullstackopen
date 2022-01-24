@@ -1,2 +1,3 @@
 # fullstackopen
-Repo for ready excercises for course Full Stack Open
+
+Repo for completed excercises for the course Full Stack Open
