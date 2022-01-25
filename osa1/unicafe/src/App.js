@@ -1,86 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 
-const Header = (props) => {
-  return (
-    <div>
-      <h1>{props.course.name}</h1>
-    </div>
-  );
-};
+const Button = (props) => (
+  <button onClick={props.handleClick}>{props.text}</button>
+);
 
-const Content = (props) => {
-  return (
-    <div>
-      <Part
-        part1={props.parts.parts[0].name}
-        exercises1={props.parts.parts[0].exercises}
-      />
-      <Part
-        part2={props.parts.parts[1].name}
-        exercises2={props.parts.parts[1].exercises}
-      />
-      <Part
-        part3={props.parts.parts[2].name}
-        exercises3={props.parts.parts[0].exercises}
-      />
-    </div>
-  );
-};
-
-const Total = (props) => {
-  return (
-    <div>
-      {
-        <p>
-          Number of exercises{" "}
-          {props.parts.parts[0].exercises +
-            props.parts.parts[1].exercises +
-            props.parts.parts[2].exercises}
-        </p>
-      }
-    </div>
-  );
-};
-
-const Part = (props) => {
-  return (
-    <div>
-      <p>
-        {props.part1} {props.exercises1}
-      </p>
-      <p>
-        {props.part2} {props.exercises2}
-      </p>
-      <p>
-        {props.part3} {props.exercises3}
-      </p>
-    </div>
-  );
-};
 const App = () => {
-  const course = {
-    name: "Half Stack application development",
-    parts: [
-      {
-        name: "Fundamentals of React",
-        exercises: 10,
-      },
-      {
-        name: "Using props to pass data",
-        exercises: 7,
-      },
-      {
-        name: "State of a component",
-        exercises: 14,
-      },
-    ],
-  };
+  // tallenna napit omaan tilaansa
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
   return (
     <div>
-      <Header course={course} />
-      <Content parts={course} />
-      <Total parts={course} />
+      <h1>give feedback</h1>
+      <Button handleClick={() => setGood(good + 1)} text="good" />
+      <Button handleClick={() => setNeutral(neutral + 1)} text="neutral" />
+      <Button handleClick={() => setBad(bad + 1)} text="bad" />
+      <h1>statistics</h1>
+      <p>good {good}</p>
+      <p>neutral {neutral}</p>
+      <p>bad {bad}</p>
     </div>
   );
 };
