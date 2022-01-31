@@ -5,9 +5,21 @@ const Button = (props) => (
 );
 
 const App = () => {
+  const [selected, setSelected] = useState(0);
+  const [votes, setVote] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
+
   const showNextAnecdote = (newValue) => {
     setSelected(newValue);
   };
+
+  const addVote = () => {
+    setVote((n) => {
+      const copy = n.map((m) => m);
+      copy[selected] += 1;
+      return copy;
+    });
+  };
+
   const anecdotes = [
     "If it hurts, do it more often.",
     "Adding manpower to a late software project makes it later!",
@@ -18,12 +30,11 @@ const App = () => {
     "Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.",
   ];
 
-  const [selected, setSelected] = useState(0);
-
-  /* return <div>{anecdotes[selected]}</div>; */
   return (
     <div>
       <p>{anecdotes[selected]}</p>
+      <p>has {votes[selected]} votes</p>
+      <Button handleClick={() => addVote()} text="vote" />
       <Button
         handleClick={() => showNextAnecdote(Math.floor(Math.random() * 7))}
         text="next anecdote"
