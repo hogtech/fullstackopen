@@ -40,17 +40,23 @@ const Content = ({ parts }) => {
   );
 };
 
-const Total = (props) => {
+const Total = ({ parts }) => {
+  //console.log("parts", parts.parts[0].exercises);
+  const addExercises = [];
+  const addArray = (total, num) => {
+    return total + num;
+  };
   return (
     <div>
-      {/* {
+      {
         <p>
-          Number of exercises{" "}
-          {props.parts.parts[0].exercises +
-            props.parts.parts[1].exercises +
-            props.parts.parts[2].exercises}
+          Number of exercises &nbsp;
+          {console.log(
+            parts.parts.map((part) => addExercises.push(part.exercises))
+          )}
+          {addExercises.reduce(addArray)}
         </p>
-      } */}
+      }
     </div>
   );
 };
