@@ -3,12 +3,38 @@ import { useState } from "react";
 const Filter = (props) => {
   return (
     <div>
-      {console.log(props)}
       filter shown with <input value={props.value} onChange={props.onChange} />
     </div>
   );
 };
-const PersonForm = () => {};
+const PersonForm = (props) => {
+  return (
+    <form onSubmit={props.onSubmit}>
+      <div>
+        name: <input value={props.nameValue} onChange={props.onNameChange} />
+      </div>
+      <div>
+        number:{" "}
+        <input value={props.numberValue} onChange={props.onNumberChange} />
+      </div>
+      <div>
+        <button type="submit">add</button>
+      </div>
+    </form>
+  );
+};
+
+const Persons = (props) => {
+  return (
+    <div>
+      {props.persons.map((person, i) => (
+        <p key={i}>
+          {person.name} {person.number}
+        </p>
+      ))}
+    </div>
+  );
+};
 const App = () => {
   const [persons, setPersons] = useState([
     { name: "Arto Hellas", number: "040-123456" },
@@ -20,8 +46,6 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
-
-  //console.log(persons, "persons");
 
   const addName = (event) => {
     event.preventDefault();
@@ -77,25 +101,17 @@ const App = () => {
         <Filter value={newFilter} onChange={handleFilterChange} />
       </div>
       <h3>add a new</h3>
+      <PersonForm
+        onSubmit={addName}
+        nameValue={newName}
+        onNameChange={handleNameChange}
+        numberValue={newNumber}
+        onNumberChange={handleNumberChange}
+      />
 
-      <form onSubmit={addName}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
       <h3>Numbers</h3>
       <div>
-        {filteredPersons.map((person, i) => (
-          <p key={i}>
-            {person.name} {person.number}
-          </p>
-        ))}
+        <Persons persons={filteredPersons} />
       </div>
     </div>
   );
