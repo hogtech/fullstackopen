@@ -4,19 +4,32 @@ const App = () => {
   const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
   const [newName, setNewName] = useState("");
 
+  //console.log(persons, "persons");
+
   const addName = (event) => {
     event.preventDefault();
-    console.log("button clicked", event.target);
     const nameObject = {
       name: newName,
     };
 
-    //setPersons(persons.concat(newName));
-    setPersons(persons.concat(nameObject));
-    setNewName("");
+    let namesMatch = false;
+    persons.forEach((item, index) => {
+      if (item.name.toLowerCase() === newName.toLowerCase()) {
+        namesMatch = true;
+      }
+    });
+
+    if (namesMatch) {
+      alert(`${newName} already in phone book`);
+      setNewName("");
+    } else {
+      setPersons(persons.concat(nameObject));
+      setNewName("");
+    }
   };
+
   const handleNameChange = (event) => {
-    console.log(event.target.value);
+    //console.log(event.target.value);
     setNewName(event.target.value);
   };
 
@@ -33,8 +46,8 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <div>
-        {persons.map((person) => (
-          <p key={person.name}>{person.name}</p>
+        {persons.map((person, i) => (
+          <p key={i}>{person.name}</p>
         ))}
       </div>
     </div>
