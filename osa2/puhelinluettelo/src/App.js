@@ -1,40 +1,8 @@
 import { useState } from "react";
+import Persons from "./components/Persons";
+import PersonForm from "./components/PersonForm";
+import Filter from "./components/Filter";
 
-const Filter = (props) => {
-  return (
-    <div>
-      filter shown with <input value={props.value} onChange={props.onChange} />
-    </div>
-  );
-};
-const PersonForm = (props) => {
-  return (
-    <form onSubmit={props.onSubmit}>
-      <div>
-        name: <input value={props.nameValue} onChange={props.onNameChange} />
-      </div>
-      <div>
-        number:{" "}
-        <input value={props.numberValue} onChange={props.onNumberChange} />
-      </div>
-      <div>
-        <button type="submit">add</button>
-      </div>
-    </form>
-  );
-};
-
-const Persons = (props) => {
-  return (
-    <div>
-      {props.persons.map((person, i) => (
-        <p key={i}>
-          {person.name} {person.number}
-        </p>
-      ))}
-    </div>
-  );
-};
 const App = () => {
   const [persons, setPersons] = useState([
     { name: "Arto Hellas", number: "040-123456" },
