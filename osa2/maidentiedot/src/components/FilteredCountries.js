@@ -1,4 +1,6 @@
 import { useState } from "react";
+const api_key = process.env.REACT_APP_API_KEY;
+console.log("api_key", api_key);
 
 const FilteredCountries = ({ filteredCountries }) => {
   const [selectedCountry, setSelectedCountry] = useState([]);
