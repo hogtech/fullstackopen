@@ -7,6 +7,7 @@ let refresh = 0;
 const FilteredCountries = ({ filteredCountries }) => {
   const [selectedCountry, setSelectedCountry] = useState([]);
   const [weatherData, setWeatherData] = useState([]);
+  const [weatherDetailData, setWeatherDetailData] = useState([]);
   let lat;
   let lon;
 
@@ -30,6 +31,26 @@ const FilteredCountries = ({ filteredCountries }) => {
       });
   }, [selectedCountry, filteredCountries]);
 
+  useEffect(() => {
+    let capital;
+    if (selectedCountry.length > 0) {
+      capital = selectedCountry[0].capital;
+    } else {
+      capital = "Stockholm";
+    }
+    axios
+      .get(
+        `http://api.openweathermap.org/data/2.5/weather?q=${capital}&appid=` +
+          api_key
+      )
+      .then((detailResponse) => {
+        console.log("icon triggered");
+        console.log("detailResponse.data: ", detailResponse.data);
+
+        setWeatherDetailData(detailResponse.data);
+      });
+  }, [selectedCountry, filteredCountries]);
+
   const handleClick = (country) => {
     setSelectedCountry(selectedCountry.concat(country));
   };
@@ -50,9 +71,6 @@ const FilteredCountries = ({ filteredCountries }) => {
     } else if (filteredCountries.length === 1) {
       setSelectedCountry(filteredCountries);
     }
-    //This causes infinite loop
-    // refresh++;
-
     return (
       <div key={filteredCountries[0].area}>
         <h1 key={filteredCountries[0].name.common}>
@@ -73,12 +91,17 @@ const FilteredCountries = ({ filteredCountries }) => {
           src={filteredCountries[0].flags.png}
         ></img>
         <h1>Weather in {filteredCountries[0].capital}</h1>
-
         <p>temperature {(weatherData.main.temp - 273.15).toFixed(2)} Celcius</p>
         <p>
-          coords {filteredCountries[0].latlng[0]}{" "}
-          {filteredCountries[0].latlng[1]}
+          <img
+            src={
+              "http://openweathermap.org/img/wn/" +
+              weatherDetailData.weather[0].icon +
+              "@2x.png"
+            }
+          />
         </p>
+        <p>wind {weatherDetailData.wind.speed} m/s</p>
       </div>
     );
   } else {
