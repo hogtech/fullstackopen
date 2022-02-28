@@ -34,23 +34,29 @@ const App = () => {
       name: newName,
       number: newNumber,
     };
-
+    let id;
     let namesMatch = false;
     persons.forEach((item, index) => {
       if (item.name.toLowerCase() === newName.toLowerCase()) {
         namesMatch = true;
+        id = item.id;
       }
     });
 
     if (namesMatch) {
-      alert(`${newName} is already added to phonebook`);
-      setNewName("");
-      setNewNumber("");
-    } else {
-      personService.create(nameObject).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
+      let result = window.confirm(
+        `${newName} is already added to phonebook, replace the old number with a new one?`
+      );
+      if (!result) {
         setNewName("");
-      });
+        setNewNumber("");
+      } else {
+        personService.update(id, nameObject).then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setNewName("");
+          window.location.reload(false);
+        });
+      }
     }
   };
 
