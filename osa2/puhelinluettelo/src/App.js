@@ -13,14 +13,6 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
 
-  /* useEffect(() => {
-    console.log("axios here");
-    axios.get("http://localhost:3001/persons").then((response) => {
-      console.log("promise fulfilled");
-      setPersons(response.data);
-    });
-  }, []); */
-
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
       setPersons(initialPersons);
@@ -57,16 +49,19 @@ const App = () => {
           window.location.reload(false);
         });
       }
+    } else {
+      personService.create(nameObject).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        setNewName("");
+      });
     }
   };
 
   const handleNameChange = (event) => {
-    //console.log(event.target.value);
     setNewName(event.target.value);
   };
 
   const handleNumberChange = (event) => {
-    //console.log(event.target.value);
     setNewNumber(event.target.value);
   };
 
@@ -76,10 +71,8 @@ const App = () => {
         person.name.toLowerCase().includes(event.target.value.toLowerCase())
       )
     );
-    /* setNewFilter(
-      persons.filter((person) => person.name.includes(event.target.value))
-    ); */
     setNewFilter(event.target.value);
+    console.log(event.target.value);
   };
 
   return (
@@ -99,7 +92,7 @@ const App = () => {
 
       <h3>Numbers</h3>
       <div>
-        <Persons persons={filteredPersons} />
+        <Persons allPersons={persons} persons={filteredPersons} />
       </div>
     </div>
   );
