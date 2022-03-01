@@ -13,7 +13,9 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
-  const [errorMessage, setErrorMessage] = useState(null);
+
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [targetPerson, setTargetPerson] = useState("");
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -32,6 +34,7 @@ const App = () => {
     };
     let id;
     let namesMatch = false;
+    let name;
     persons.forEach((item, index) => {
       if (item.name.toLowerCase() === newName.toLowerCase()) {
         namesMatch = true;
@@ -47,24 +50,40 @@ const App = () => {
         setNewName("");
         setNewNumber("");
       } else {
-        personService.update(id, nameObject).then((returnedPerson) => {
-          setPersons(persons.concat(returnedPerson));
-          setNewName("");
-          setErrorMessage(`Modified ${returnedPerson.name}`);
-          setTimeout(() => {
-            setErrorMessage(null);
-            window.location.reload(false);
-          }, 5000);
-        });
+        personService
+          .update(id, nameObject)
+          .then((returnedPerson) => {
+            setPersons(persons.concat(returnedPerson));
+            setNewName("");
+            setSuccessMessage(`Modified ${returnedPerson.name}`);
+            console.log("update: ", newName);
+
+            setTimeout(() => {
+              setSuccessMessage(null);
+              window.location.reload(false);
+            }, 5000);
+          })
+          .catch((error) => {
+            console.log("error: ", name);
+
+            setSuccessMessage(
+              `Information of ${newName} has already been removed from server`
+            );
+            setTimeout(() => {
+              setSuccessMessage(null);
+              window.location.reload(false);
+            }, 5000);
+          });
       }
     } else {
       personService.create(nameObject).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
         setNewName("");
 
-        setErrorMessage(`Added ${returnedPerson.name}`);
+        setSuccessMessage(`Added ${returnedPerson.name}`);
+
         setTimeout(() => {
-          setErrorMessage(null);
+          setSuccessMessage(null);
           window.location.reload(false);
         }, 5000);
       });
@@ -88,11 +107,9 @@ const App = () => {
     setNewFilter(event.target.value);
     console.log(event.target.value);
   };
-
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={errorMessage} />
       <div>
         <Filter value={newFilter} onChange={handleFilterChange} />
       </div>
@@ -106,6 +123,8 @@ const App = () => {
       />
 
       <h3>Numbers</h3>
+      <Notification message={successMessage} />
+
       <div>
         <Persons allPersons={persons} persons={filteredPersons} />
       </div>
