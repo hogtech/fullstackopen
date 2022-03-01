@@ -4,6 +4,7 @@ import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
 import axios from "axios";
 import personService from "./services/persons";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -12,6 +13,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setNewFilter] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -48,14 +50,23 @@ const App = () => {
         personService.update(id, nameObject).then((returnedPerson) => {
           setPersons(persons.concat(returnedPerson));
           setNewName("");
-          window.location.reload(false);
+          setErrorMessage(`Modified ${returnedPerson.name}`);
+          setTimeout(() => {
+            setErrorMessage(null);
+            window.location.reload(false);
+          }, 5000);
         });
       }
     } else {
       personService.create(nameObject).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
         setNewName("");
-        window.location.reload(false);
+
+        setErrorMessage(`Added ${returnedPerson.name}`);
+        setTimeout(() => {
+          setErrorMessage(null);
+          window.location.reload(false);
+        }, 5000);
       });
     }
   };
@@ -81,6 +92,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <div>
         <Filter value={newFilter} onChange={handleFilterChange} />
       </div>
