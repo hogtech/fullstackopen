@@ -10,16 +10,30 @@ const handleClick = (person) => {
   window.location.reload(false);
 };
 const Persons = (props) => {
-  return (
-    <div>
-      {props.persons.map((person, i) => (
-        <p key={i}>
-          {person.name} {person.number}
-          <button onClick={() => handleClick(person)}>delete</button>
-        </p>
-      ))}
-    </div>
-  );
+  if (props.persons.length !== 0) {
+    return (
+      <div>
+        {props.persons.map((person, i) => (
+          <p key={i}>
+            {person.name} {person.number}
+            <button onClick={() => handleClick(person)}>delete</button>
+          </p>
+        ))}
+      </div>
+    );
+  }
+  if (props.persons.length === 0) {
+    return (
+      <div>
+        {props.allPersons.map((person, i) => (
+          <p key={i}>
+            {person.name} {person.number}
+            <button onClick={() => handleClick(person)}>delete</button>
+          </p>
+        ))}
+      </div>
+    );
+  }
 };
 
 export default Persons;

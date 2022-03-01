@@ -17,8 +17,10 @@ const App = () => {
     personService.getAll().then((initialPersons) => {
       setPersons(initialPersons);
     });
+    setFilteredPersons(persons);
   }, []);
   console.log("render", persons.length, "persons");
+  console.log("filteredPersons ", filteredPersons);
 
   const addName = (event) => {
     event.preventDefault();
@@ -53,6 +55,7 @@ const App = () => {
       personService.create(nameObject).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
         setNewName("");
+        window.location.reload(false);
       });
     }
   };
