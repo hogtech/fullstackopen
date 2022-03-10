@@ -5,6 +5,7 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config();
 const Person = require("./models/person");
+const res = require("express/lib/response");
 
 app.use(express.json());
 
@@ -24,12 +25,14 @@ morgan.token("param", function (req, res, param) {
   return req.params[param];
 });
 
+let persons = [];
 app.get("/", (req, res) => {
   res.send("<h1>Hello World!</h1>");
 });
 
 app.get("/api/persons", (req, res) => {
   Person.find({}).then((persons) => {
+    persons = persons;
     res.json(persons);
   });
 });
@@ -58,23 +61,26 @@ const generateId = () => {
 };
 
 app.post("/api/persons", (request, response) => {
-  const body = request.body;
-  console.log("request.body: ", request.body);
-  console.log("persons: ", persons);
-  console.log("persons -> body.name: ", body.name);
-  console.log("Object.values: ", Object.values(persons));
-  console.log("match: " + Object.values(persons[0]).includes("Arto Hellas"));
+  console.log("body", request.body);
 
-  if (persons.some((e) => e.name === request.body.name)) {
+  const body = request.body;
+
+  /* if (body.content === undefined) {
+    return response.status(400).json({ error: "content missing" });
+  } */
+
+  Person.find({}).then((result) => {
+    result.forEach((person) => {
+      persons.concat(person.name, person.number);
+    });
+  });
+
+  /*  if (persons.some((e) => e.name === request.body.name)) {
     return response.status(400).json({
       error: "name must be unique",
     });
-  }
-  /* if (persons.some((e) => e.number === request.body.number)) {
-    return response.status(400).json({
-      error: "number must be unique",
-    });
   } */
+
   if (body.name === "" || !body.name) {
     return response.status(400).json({
       error: "name is missing",
@@ -85,13 +91,45 @@ app.post("/api/persons", (request, response) => {
       error: "number is missing",
     });
   }
-  /*  if (Object.values(persons).includes(body.name)) {
-    console.log("persons -> body.name: ", body.name);
 
+  const person = new Person({
+    id: "generateId",
+    name: body.name,
+    number: body.number,
+  });
+
+  person.save().then((savedNote) => {
+    response.json(savedNote);
+  });
+});
+
+/* app.post("/api/persons", (request, response) => {
+  const body = request.body;
+  console.log("request.body: ", request.body);
+  console.log("persons: ", persons);
+  console.log("persons -> body.name: ", body.name);
+  console.log("Object.values: ", Object.values(persons));
+  console.log("match: " + Object.values(persons[0]).includes("Arto Hellas"));
+  Person.find({}).then((persons) => {
+    res.json(persons);
+  });
+
+  if (persons.some((e) => e.name === request.body.name)) {
     return response.status(400).json({
       error: "name must be unique",
     });
-  } */
+  }
+
+  if (body.name === "" || !body.name) {
+    return response.status(400).json({
+      error: "name is missing",
+    });
+  }
+  if (body.number === "" || !body.number) {
+    return response.status(400).json({
+      error: "number is missing",
+    });
+  }
 
   const person = {
     id: generateId(),
@@ -106,7 +144,7 @@ app.post("/api/persons", (request, response) => {
   persons = persons.concat(person);
 
   response.json(person);
-});
+}); */
 
 app.get("/info", (req, res) => {
   today = new Date();
