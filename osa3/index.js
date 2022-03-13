@@ -68,6 +68,11 @@ app.get("/api/persons/:id", (request, response, next) => {
     .catch((error) => next(error));
 });
 
+/* const update = (id, newObject) => {
+  const request = axios.put(`${baseUrl}/${id}`, newObject);
+  return request.then((response) => response.data);
+}; */
+
 app.delete("/api/persons/:id", (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
     .then((result) => {
@@ -81,15 +86,23 @@ app.delete("/api/persons/:id", (request, response, next) => {
   return maxId + 1;
 };
  */
+
+app.put("/api/persons/:id", (request, response, next) => {
+  console.log("body", request.body);
+  const body = request.body;
+  Person.findByIdAndUpdate(request.params.id, {
+    name: body.name,
+    number: body.number,
+  })
+    .then((result) => {
+      response.status(204).end();
+    })
+    .catch((error) => next(error));
+});
+
 app.post("/api/persons", (request, response, next) => {
   console.log("body", request.body);
-
   const body = request.body;
-
-  /* if (body.content === undefined) {
-    return response.status(400).json({ error: "content missing" });
-  } */
-
   Person.find({})
     .then((result) => {
       if (person) {
@@ -101,12 +114,6 @@ app.post("/api/persons", (request, response, next) => {
       }
     })
     .catch((error) => next(error));
-
-  /*  if (persons.some((e) => e.name === request.body.name)) {
-    return response.status(400).json({
-      error: "name must be unique",
-    });
-  } */
 
   if (body.name === "" || !body.name) {
     return response.status(400).json({
