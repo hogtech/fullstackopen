@@ -6,7 +6,7 @@ const cors = require("cors");
 require("dotenv").config();
 const Person = require("./models/person");
 const res = require("express/lib/response");
-const { db } = require("./models/person");
+//const { db } = require("./models/person");
 
 app.use(express.static("build"));
 
@@ -77,8 +77,15 @@ app.put("/api/persons/:id", (request, response, next) => {
 app.post("/api/persons", (request, response, next) => {
   console.log("body", request.body);
   const body = request.body;
+
   Person.find({})
     .then((result) => {
+      if (result.some((e) => e.name === request.body.name)) {
+        return response.status(400).json({
+          error: "name must be unique",
+        });
+        //console.log("result here: ", result[0]);
+      }
       if (person) {
         result.forEach((person) => {
           persons.concat(person.name, person.number);
@@ -111,13 +118,22 @@ app.post("/api/persons", (request, response, next) => {
   });
 });
 
-app.get("/info", (request, response, error) => {
+app.get("/info", (request, response, next) => {
   const today = new Date();
   const timeUTC = today.toUTCString();
-  const itemsInDb = db.collection.length;
-  console.log(itemsInDb);
-
-  response.send(`Phonebook has info for ${itemsInDb} people </br> ${timeUTC}`);
+  let itemsInDb = 0;
+  Person.find({})
+    .then((person) => {
+      if (person) {
+        itemsInDb = person.length;
+        response.send(
+          `Phonebook has info for ${itemsInDb} people </br> ${timeUTC}`
+        );
+      } else {
+        response.status(404).end();
+      }
+    })
+    .catch((error) => next(error));
 });
 
 const unknownEndpoint = (request, response) => {
