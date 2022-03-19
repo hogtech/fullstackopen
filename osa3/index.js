@@ -77,15 +77,8 @@ app.put("/api/persons/:id", (request, response, next) => {
 app.post("/api/persons", (request, response, next) => {
   console.log("body", request.body);
   const body = request.body;
-
   Person.find({})
     .then((result) => {
-      if (result.some((e) => e.name === request.body.name)) {
-        return response.status(400).json({
-          error: "name must be unique",
-        });
-        //console.log("result here: ", result[0]);
-      }
       if (person) {
         result.forEach((person) => {
           persons.concat(person.name, person.number);
