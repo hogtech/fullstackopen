@@ -13,8 +13,13 @@ mongoose
   });
 
 const personSchema = new mongoose.Schema({
-  name: String,
-  number: String,
+  name: {
+    type: String,
+    minlength: 3,
+  },
+  number: {
+    type: String,
+  },
 });
 
 personSchema.set("toJSON", {

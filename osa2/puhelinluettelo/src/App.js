@@ -1,8 +1,7 @@
-import { useState, useEffect, useDebugValue } from "react";
+import { useState, useEffect } from "react";
 import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
-import axios from "axios";
 import personService from "./services/persons";
 import Notification from "./components/Notification";
 
@@ -15,13 +14,12 @@ const App = () => {
   const [newFilter, setNewFilter] = useState("");
 
   const [successMessage, setSuccessMessage] = useState(null);
-  const [targetPerson, setTargetPerson] = useState("");
-
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
       setPersons(initialPersons);
     });
     setFilteredPersons(persons);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   console.log("render", persons.length, "persons");
   console.log("filteredPersons ", filteredPersons);
@@ -76,17 +74,28 @@ const App = () => {
           });
       }
     } else {
-      personService.create(nameObject).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setNewName("");
+      personService
+        .create(nameObject)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setNewName("");
 
-        setSuccessMessage(`Added ${returnedPerson.name}`);
+          setSuccessMessage(`Added ${returnedPerson.name}`);
 
-        setTimeout(() => {
-          setSuccessMessage(null);
-          window.location.reload(false);
-        }, 5000);
-      });
+          setTimeout(() => {
+            setSuccessMessage(null);
+            window.location.reload(false);
+          }, 5000);
+        })
+        .catch((error) => {
+          const err = error.response.data.error;
+          setSuccessMessage(`Error: ${err}`);
+          console.log(error.response.data);
+        });
+      setTimeout(() => {
+        setSuccessMessage(null);
+        window.location.reload(false);
+      }, 5000);
     }
   };
 

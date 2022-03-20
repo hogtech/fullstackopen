@@ -5,9 +5,9 @@ const Notification = ({ message }) => {
 
   let text = message;
   let position = text.search("Information");
-  if (position !== -1) {
+  let position2 = text.search("Error");
+  if (position !== -1 || position2 !== -1) {
     return <div className="error">{message}</div>;
-    alert("it does!");
   } else {
     return <div className="success">{message}</div>;
   }
