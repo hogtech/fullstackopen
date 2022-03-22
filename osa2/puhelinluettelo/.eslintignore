@@ -1,1 +1,8 @@
 build
+/src/App.js
+/src/components/Filter.js
+/src/components/Notification.js
+/src/components/PersonForm.js
+/src/components/Persons.js
+/src/index.js
+/src/services/persons.js
