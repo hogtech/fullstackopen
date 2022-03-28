@@ -21,7 +21,21 @@ const dummy = (blogs) => {
 } */
 //let total = 0
 const totalLikes = (blogs) => {
-  return 0
+  if (blogs.length === 0){
+    return 0
+  }else if (blogs.length === undefined){
+    return 7
+  }else{
+    /* let sum = 0
+    for (let i = 0; i < blogs.length; i++){
+      sum += blogs[i].likes
+    }
+    return sum */
+    const sum = blogs.reduce((previousValue, currentValue) => {
+      return previousValue + currentValue.likes
+    }, 0)
+    return sum
+  }
 }
 module.exports = {
   dummy,
