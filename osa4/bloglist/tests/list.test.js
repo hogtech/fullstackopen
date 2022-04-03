@@ -73,7 +73,7 @@ describe('total likes', () => {
     expect(result).toBe(36)
   })
 })
-describe('most likes', () => {
+describe('most likes per blog', () => {
   const blogsForLikes = [
     {
       _id: '5a422a851b54a676234d17f7',
@@ -335,8 +335,8 @@ describe('most blogs', () => {
     )
   })
 })
-describe('most blogs', () => {
-  const blogsForMostBlogs = [
+describe('most likes per author', () => {
+  const blogsForMostLikes = [
     {
       _id: '5a422a851b54a676234d17f7',
       title: 'React patterns',
@@ -386,7 +386,7 @@ describe('most blogs', () => {
       __v: 0
     }
   ]
-  const blogsForMostBlogsModifiedAuthors = [
+  const blogsForMostLikesModifiedAuthorsAndLikes = [
     {
       _id: '5a422a851b54a676234d17f7',
       title: 'React patterns',
@@ -432,34 +432,36 @@ describe('most blogs', () => {
       title: 'Type wars',
       author: 'Robert C. Martin',
       url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
-      likes: 6,
+      likes: 14,
       __v: 0
     }
   ]
   test('of empty list is zero', () => {
-    const result = listHelper.mostBlogs([])
+    const result = listHelper.mostLikes([])
     expect(result).toBe(0)
   })
 
   test('when list has only one blog equals the likes of that', () => {
-    const result = listHelper.mostBlogs([blogsForMostBlogs[0]])
+    const result = listHelper.mostLikes([blogsForMostLikes[0]])
     //const result = listHelper.favoriteBlog([blogsForLikes[0]])
     expect(result).toEqual(
       { author: 'Michael Chan',
-        blogs: 1 })
+        likes: 7 })
   })
+
   test('of a bigger list is calculated right', () => {
-    const result = listHelper.mostBlogs(blogsForMostBlogs)
-    expect(result).toEqual({
-      author: 'Robert C. Martin',
-      blogs: 3
-    })
-  })
-  test('of a modified bigger list is calculated right', () => {
-    const result = listHelper.mostBlogs(blogsForMostBlogsModifiedAuthors)
+    const result = listHelper.mostLikes(blogsForMostLikes)
     expect(result).toEqual({
       author: 'Edsger W. Dijkstra',
-      blogs: 4,
+      likes: 17
+    })
+  })
+
+  test('of a modified bigger list is calculated right', () => {
+    const result = listHelper.mostLikes(blogsForMostLikesModifiedAuthorsAndLikes)
+    expect(result).toEqual({
+      author: 'Robert C. Martin',
+      likes: 19,
     }
     )
   })
