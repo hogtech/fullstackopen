@@ -68,26 +68,52 @@ const mostBlogs = (blogs) => {
   },{})
   const max = _.maxBy(blogsPerAuthor, 'blogs' )
   console.log('BlogsPerAuthor: ', blogsPerAuthor) */
-
-  function mode(blogs){
+  /* function mode(blogs){
     return blogs.sort((a,b) =>
       blogs.filter(v => v===a).length
-      - blogs.filter(v => v===b).length
+        - blogs.filter(v => v===b).length
     ).pop()
   }
+ */
+  /* let authors = []
+  for (let index = 0; index < blogs.length; index++) {
+    authors.push(blogs[index].author)
+  } */
+  /* authors = _.head(_(blogs)
+    .countBy()
+    .entries()
+    .maxBy(_.last)) */
+  //const nameOfTheAuthor = _.values(_.groupBy(blogs)).map(d => ({ name: d[0], count: d.length }))
+  //const nameOfTheAuthor = _.maxBy(blogs, 'author').author
+  //const numberOfBlogs = _.maxBy(blogs, 'author')
+  //console.log('nameOfTheAuthor: ', nameOfTheAuthor[0])
+  //console.log('numberOfBlogs: ', numberOfBlogs)
+  //console.log('result: ', result)
+  //console.log('mode: ', mode(blogs))
+  //console.log('author: ', blogs[0].author)
+  //console.log('authors: ', authors)
 
+  const blogsPerAuthor = blogs.reduce((object, blog) => {
+    object[blog.author] = object[blog.author] ? object[blog.author] + 1 : 1
 
-
-  const result = _.values(_.groupBy(blogs)).map(d => ({ name: d[0], count: d.length }))
-  const nameOfTheAuthor = _.maxBy(blogs, 'author').author
-  const numberOfBlogs = _.maxBy(blogs, 'author')
-  console.log('nameOfTheAuthor: ', nameOfTheAuthor)
-  console.log('numberOfBlogs: ', numberOfBlogs)
-  console.log('result: ', result)
-  console.log('mode: ', mode(blogs))
+    return object
+  }, {})
+  let midResult = 0
+  let authorWithMostBlogs = null
+  let mostBlogsNumber = 0
+  Object.entries(blogsPerAuthor).forEach(entry => {
+    const [a, c] = entry
+    if (c > midResult){
+      authorWithMostBlogs = a
+      mostBlogsNumber = c
+      midResult = c
+    }
+  })
+  /*  console.log('author with most blogs: ', authorWithMostBlogs)
+  console.log('most blogs number: ', mostBlogsNumber) */
   return {
-    author: nameOfTheAuthor,
-    blogs: numberOfBlogs
+    author: authorWithMostBlogs,
+    blogs: mostBlogsNumber
   }
 }
 
