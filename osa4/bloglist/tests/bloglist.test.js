@@ -34,6 +34,11 @@ test('there are three blogs', async () => {
   expect(response.body).toHaveLength(3)
 })
 
+test('the name of the id is id instead of _id', async () => {
+  const response = await api.get('/api/blogs')
+  //console.log('response body [0].id', response.body[0].id)
+  expect(response.body[0].id).toBeDefined()
+})
 afterAll(() => {
   mongoose.connection.close()
 })
