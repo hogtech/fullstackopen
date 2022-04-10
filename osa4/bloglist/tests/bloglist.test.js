@@ -62,6 +62,29 @@ test('a valid blog can be added ', async () => {
     'First blog'
   )
 })
+
+test('blog without likes is given 0 for likes', async () => {
+  const newBlog = {
+    title: 'Fourth blog',
+    author: 'Hans Hokka',
+    url: 'www.nelonen.fi'
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+
+  const blogsAtEnd = await helper.blogsInDb()
+  console.log('blogsAtEnd: ', blogsAtEnd)
+  //expect(blogsAtEnd[3].likes).toBeDefined()
+  expect(blogsAtEnd[3].likes).toEqual(0)
+
+
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
