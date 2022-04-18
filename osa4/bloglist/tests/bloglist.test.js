@@ -162,6 +162,45 @@ test('adding a blog without url and title triggers 400 Bad Request', async () =>
     .expect('Content-Type', /application\/json/)
 })
 
+test('modifying blog works', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToModify = blogsAtStart[1]
+  const newBlog = {
+    title: 'modified title',
+    author: 'modified author',
+    url: 'modified url',
+    likes: 20
+  }
+  await api
+    .put(`/api/blogs/${blogToModify.id}`)
+    .send(newBlog)
+    .expect(200)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  /*   console.log('first id: ', blogsAtStart[0].id)
+  console.log('second id: ', blogsAtStart[1].id)
+  console.log('third id: ', blogsAtStart[2].id)
+  console.log('first id: ', blogsAtEnd[0].id)
+  console.log('second id: ', blogsAtEnd[1].id)
+  console.log('third id: ', blogsAtEnd[2].id)
+  console.log('blogToModify.id: ', blogToModify.id) */
+
+  expect(blogsAtEnd).toHaveLength(
+    helper.initialBlogs.length
+  )
+
+  /* const contents = blogsAtEnd.map(r => r.id)
+  console.log('contents: ', contents)
+  console.log('blogs at end: ', blogsAtEnd)
+  expect(contents).not.toContain(blogToModify.likes)
+   */
+  expect(blogsAtEnd[1].title).toEqual(newBlog.title)
+  expect(blogsAtEnd[1].author).toEqual(newBlog.author)
+  expect(blogsAtEnd[1].url).toEqual(newBlog.url)
+  expect(blogsAtEnd[1].likes).toEqual(newBlog.likes)
+
+})
+
 
 afterAll(() => {
   mongoose.connection.close()
