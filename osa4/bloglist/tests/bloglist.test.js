@@ -121,6 +121,48 @@ test('a blog can be deleted', async () => {
   expect(contents).not.toContain(blogToDelete.id)
 })
 
+test('adding a blog without title triggers 400 Bad Request', async () => {
+  const newBlog = {
+    author: 'Hans Hokka',
+    url: 'www.google.fi',
+    likes: 10
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+
+})
+test('adding a blog without url triggers 400 Bad Request', async () => {
+  const newBlog = {
+    title: 'Some title',
+    author: 'Hans Hokka',
+    likes: 10
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+})
+
+test('adding a blog without url and title triggers 400 Bad Request', async () => {
+  const newBlog = {
+    author: 'Hans Hokka',
+    likes: 10
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+})
+
+
 afterAll(() => {
   mongoose.connection.close()
 })
