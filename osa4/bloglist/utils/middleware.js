@@ -43,9 +43,13 @@ const getTokenFrom = request => {
 const tokenExtractor = (request, response, next) => {
   const token = getTokenFrom(request)
   request.token = token
-
+  if (!token) {
+    return response.status(401).json({ error: 'token missing' })
+  }
+  console.log('token: ', token)
   next()
 }
+
 
 module.exports = {
   requestLogger,
