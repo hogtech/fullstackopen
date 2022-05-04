@@ -55,8 +55,23 @@ blogsRouter.delete('/:id', async (request, response) => {
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
   }
-  await Blog.findByIdAndRemove(request.params.id)
-  response.status(204).end()
+  const blog = await Blog.findById(request.params.id)
+  const userFromBlog = blog.user
+  const userFromToken = decodedToken.id
+  console.log('request.params.id: ', request.params.id)
+  console.log('userFromBlog: ', userFromBlog.toString())
+  console.log('userFromToken: ', userFromToken)
+  console.log('decoded token: ', decodedToken)
+
+  //const userid = request.user.id
+  if (userFromBlog.toString() === userFromToken.toString()){
+    await Blog.findByIdAndRemove(request.params.id)
+    console.log('found: ', request.params.id)
+    response.status(204).end()
+  } else {
+    console.log('not found: ', request.params.id)
+    response.status(401).end()
+  }
 })
 
 blogsRouter.put('/:id', async (request, response) => {
