@@ -24,7 +24,8 @@ blogsRouter.post('/', async (request, response) => {
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
   }
-  const user = await User.findById(decodedToken.id)
+  //const user = await User.findById(decodedToken.id)
+  const user = request.user
   //const user = await User.findById(request.body.userId)
   //const user = await User.findOne().sort('-created_at')
   console.log('user: ', user)
@@ -49,19 +50,21 @@ blogsRouter.post('/', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-  //const token = request.token
+  /* //const token = request.token
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
   ///const decodedToken = jwt.verify(token, process.env.SECRET)
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
-  }
+  } */
   const blog = await Blog.findById(request.params.id)
   const userFromBlog = blog.user
-  const userFromToken = decodedToken.id
+  //const userFromToken = decodedToken.id
+  const userFromToken = request.user.id
   console.log('request.params.id: ', request.params.id)
   console.log('userFromBlog: ', userFromBlog.toString())
   console.log('userFromToken: ', userFromToken)
-  console.log('decoded token: ', decodedToken)
+  console.log('request.user.id: ', request.user.id)
+  //console.log('decoded token: ', decodedToken)
 
   //const userid = request.user.id
   if (userFromBlog.toString() === userFromToken.toString()){
