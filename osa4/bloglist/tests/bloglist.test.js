@@ -5,6 +5,7 @@ const Blog = require('../models/blog')
 const api = supertest(app)
 const helper = require('./test_helper')
 
+const token = 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imhob2trYTYiLCJpZCI6IjYyNzI4ODlkZmQ4N2M2MzM3NDIwNjc5OSIsImlhdCI6MTY1MTY3MzY5OH0.TAgkasOqp9d9O18JDpQbmNq4XeVMyC1eGjf_NjVeLhE'
 
 /* beforeEach(async () => {
   await Blog.deleteMany({})
@@ -16,26 +17,33 @@ const helper = require('./test_helper')
   await blogObject.save()
 })
  */
+let loggedInToken
 
 beforeEach(async () => {
   await Blog.deleteMany({})
   await Blog.insertMany(helper.initialBlogs)
 })
 test('blogs are returned as json', async () => {
+  //username: hhokka6
   await api
     .get('/api/blogs')
+    .set('Authorization', token)
     .expect(200)
     .expect('Content-Type', /application\/json/)
 })
 
 test('there are three blogs', async () => {
-  const response = await api.get('/api/blogs')
+  const response = await api
+    .get('/api/blogs')
+    .set('Authorization', token)
   //console.log('response body length: ', response.body.length)
   expect(response.body).toHaveLength(helper.initialBlogs.length)
 })
 
 test('the name of the id is id instead of _id', async () => {
-  const response = await api.get('/api/blogs')
+  const response = await api
+    .get('/api/blogs')
+    .set('Authorization', token)
   //console.log('response body [0].id', response.body[0].id)
   expect(response.body[0].id).toBeDefined()
 })
@@ -47,12 +55,14 @@ test('a valid blog can be added ', async () => {
     url: 'www.google.fi',
     likes: 1
   }
-
   await api
     .post('/api/blogs')
+    //.set('Authorization', token)
+    .set('Authorization', token)
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
+
 
   const blogsAtEnd = await helper.blogsInDb()
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)

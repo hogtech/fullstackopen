@@ -1,6 +1,6 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
-const User = require('../models/user')
+//const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 /*
 const getTokenFrom = request => {
@@ -27,7 +27,7 @@ blogsRouter.post('/', async (request, response) => {
   //const user = await User.findById(decodedToken.id)
   const user = request.user
   //const user = await User.findById(request.body.userId)
-  //const user = await User.findOne().sort('-created_at')
+  //const user = await User.finssdOne().sort('-created_at')
   console.log('user: ', user)
   const blog = new Blog({
     title: body.title,
