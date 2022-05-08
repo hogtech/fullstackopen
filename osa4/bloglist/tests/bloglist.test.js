@@ -17,7 +17,6 @@ const token = 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imhob
   await blogObject.save()
 })
  */
-let loggedInToken
 
 beforeEach(async () => {
   await Blog.deleteMany({})
