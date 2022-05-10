@@ -6,7 +6,7 @@ import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  //const [newBlog, setNewBlog] = useState(null)
+  const [newBlog, setNewBlog] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -21,9 +21,11 @@ const App = () => {
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
+
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
+      console.log('loggedUserJSON user.token: ', user.token)
       blogService.setToken(user.token)
     }
   }, [])
@@ -32,7 +34,7 @@ const App = () => {
     window.localStorage.removeItem(
       'loggedBlogAppUser'
     )
-    window.location.reload(false)
+    //window.location.reload(false)
   }
 
   const loginForm = () => (
@@ -87,6 +89,37 @@ const App = () => {
       }, 5000)
     }
   }
+
+  const addBlog = (event) => {
+    event.preventDefault()
+    const blogObject = {
+      content: newBlog,
+      date: new Date().toISOString(),
+      important: Math.random() > 0.5,
+      id: blogs.length + 1,
+    }
+
+    blogService
+      .create(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+        setNewBlog('')
+      })
+  }
+
+  const handleBlogChange = (event) => {
+    setNewBlog(event.target.value)
+  }
+
+  const blogForm = () => (
+    <form onSubmit={addBlog}>
+      <input
+        value={newBlog}
+        onChange={handleBlogChange}
+      />
+      <button type="submit">save</button>
+    </form>
+  )
   return(
     <div>
 
@@ -99,7 +132,7 @@ const App = () => {
           <p>{user.name} logged in <button onClick={logout}>
             logout
           </button></p>
-
+          {blogForm()}
           {blogsList()}
         </div>
       }
