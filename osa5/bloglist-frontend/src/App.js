@@ -6,7 +6,10 @@ import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [newBlog, setNewBlog] = useState(null)
+  //const [newBlog, setNewBlog] = useState(null)
+  const [title, setTitle] = useState(null)
+  const [author, setAuthor] = useState(null)
+  const [url, setUrl] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -71,11 +74,14 @@ const App = () => {
   )
   const handleLogin = async (event) => {
     event.preventDefault()
+    //console.log('handleLogin user.token: ', user.token)
     console.log('logging in with', username, password)
     try {
       const user = await loginService.login({
         username, password,
       })
+      blogService.setToken(user.token)
+
       window.localStorage.setItem(
         'loggedBlogAppUser', JSON.stringify(user)
       )
@@ -93,32 +99,58 @@ const App = () => {
   const addBlog = (event) => {
     event.preventDefault()
     const blogObject = {
-      content: newBlog,
-      date: new Date().toISOString(),
-      important: Math.random() > 0.5,
-      id: blogs.length + 1,
+      title: title,
+      author: author,
+      url: url,
     }
 
     blogService
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setNewBlog('')
+        //setNewBlog('')
       })
   }
 
-  const handleBlogChange = (event) => {
-    setNewBlog(event.target.value)
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value)
+  }
+  const handleAuthorChange = (event) => {
+    setAuthor(event.target.value)
+  }
+  const handleUrlChange = (event) => {
+    setUrl(event.target.value)
   }
 
   const blogForm = () => (
-    <form onSubmit={addBlog}>
-      <input
-        value={newBlog}
-        onChange={handleBlogChange}
-      />
-      <button type="submit">save</button>
-    </form>
+    <div>
+      <h1>create new</h1>
+      <form onSubmit={addBlog}>
+        <label htmlFor="title">title</label>
+        <input
+          id="input"
+          name="title"
+          value={title}
+          //value="hans"
+          onChange={handleTitleChange}
+        /><br></br>
+        <label htmlFor="author">author</label>
+        <input
+          id="author"
+          name="author"
+          value={author}
+          onChange={handleAuthorChange}
+        /><br></br>
+        <label htmlFor='url'>url</label>
+        <input
+          id="url"
+          name="url"
+          value={url}
+          onChange={handleUrlChange}
+        /><br></br>
+        <button type="submit">create</button>
+      </form>
+    </div>
   )
   return(
     <div>
