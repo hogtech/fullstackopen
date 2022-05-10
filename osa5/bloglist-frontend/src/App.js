@@ -37,12 +37,13 @@ const App = () => {
     window.localStorage.removeItem(
       'loggedBlogAppUser'
     )
-    //window.location.reload(false)
+    window.location.reload(false)
   }
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <h1>log in to application</h1>
+      <Notification message={errorMessage} />
       <div>
         username
         <input
@@ -89,7 +90,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('wrong credentials')
+      setErrorMessage('wrong username or password')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -109,7 +110,12 @@ const App = () => {
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
         //setNewBlog('')
-      })
+        setErrorMessage(`a new blog ${returnedBlog.title.toString()} by ${returnedBlog.author.toString()} added`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      }
+      )
   }
 
   const handleTitleChange = (event) => {
@@ -125,6 +131,7 @@ const App = () => {
   const blogForm = () => (
     <div>
       <h1>create new</h1>
+      <Notification message={errorMessage} />
       <form onSubmit={addBlog}>
         <label htmlFor="title">title</label>
         <input
@@ -154,10 +161,6 @@ const App = () => {
   )
   return(
     <div>
-
-
-      <Notification message={errorMessage} />
-
       {user === null ?
         loginForm() :
         <div>
