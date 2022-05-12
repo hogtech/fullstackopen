@@ -9,9 +9,9 @@ import Togglable from './components/Togglable'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   //const [newBlog, setNewBlog] = useState(null)
-  const [title, setTitle] = useState(null)
+  /* const [title, setTitle] = useState(null)
   const [author, setAuthor] = useState(null)
-  const [url, setUrl] = useState(null)
+  const [url, setUrl] = useState(null) */
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -101,13 +101,7 @@ const App = () => {
     }
   }
 
-  const addBlog = (event) => {
-    event.preventDefault()
-    const blogObject = {
-      title: title,
-      author: author,
-      url: url,
-    }
+  const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
     blogService
       .create(blogObject)
@@ -129,13 +123,7 @@ const App = () => {
       <Notification message={errorMessage} />
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <BlogForm
-          addBlog={addBlog}
-          handleTitleChange = {({ target }) => setTitle(target.value)}
-          handleAuthorChange = {({ target }) => setAuthor(target.value)}
-          handleUrlChange = {({ target }) => setUrl(target.value)}
-          title = {title}
-          author = {author}
-          url = {url}
+          createBlog={addBlog}
         />
       </Togglable>
     </div>
