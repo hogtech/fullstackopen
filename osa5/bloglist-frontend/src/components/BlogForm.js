@@ -4,6 +4,7 @@ const BlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [likes, setLikes] = useState('')
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value)
@@ -17,12 +18,17 @@ const BlogForm = ({ createBlog }) => {
     setUrl(event.target.value)
   }
 
+  const handleLikesChange = (event) => {
+    setLikes(event.target.value)
+  }
+
   const addBlog = (event) => {
     event.preventDefault()
     const blogObject = {
       title: title,
       author: author,
-      url: url
+      url: url,
+      likes: likes
     }
     console.log('BlogForm/addBlog: ', blogObject)
 
@@ -55,6 +61,13 @@ const BlogForm = ({ createBlog }) => {
           name="url"
           value={url}
           onChange={handleUrlChange}
+        /><br></br>
+        <label htmlFor='url'>likes</label>
+        <input
+          id="likes"
+          name="likes"
+          value={likes}
+          onChange={handleLikesChange}
         /><br></br>
         <button type="submit">create</button>
       </form>
