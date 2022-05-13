@@ -72,9 +72,11 @@ const App = () => {
   const blogsList = () => (
     <div>
       <h2>blogs</h2>
+
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
+
     </div>
   )
   const handleLogin = async (event) => {
@@ -121,7 +123,7 @@ const App = () => {
     <div>
 
       <Notification message={errorMessage} />
-      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
+      <Togglable buttonLabel="create new blog" ref={blogFormRef} togglableCloseButtonLabel='cancel'>
         <BlogForm
           createBlog={addBlog}
         />
@@ -142,14 +144,7 @@ const App = () => {
       }
     </div>
   )
-  /* return (
-    <div>
-      <h2>blogs</h2>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
-    </div>
-  ) */
+
 }
 
 export default App
