@@ -44,6 +44,7 @@ const App = () => {
         setBlogs(blogs))
     } catch (error) {
       console.log('error in like')
+      setErrorMessage('Error in function "like"')
     }
 
   }
