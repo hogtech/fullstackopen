@@ -1,7 +1,7 @@
 import { useState } from 'react'
 //import blogService from '../services/blogs'
 
-const Blog = ({ blog, makeLikeCallback }) => {
+const Blog = ({ blog, makeLikeCallback, removeCallback }) => {
 
   const [visible, setVisible] = useState(false)
 
@@ -52,6 +52,13 @@ const Blog = ({ blog, makeLikeCallback }) => {
     console.log('addLike2')
   } */
 
+  const remove = async (event) => {
+    event.preventDefault()
+    console.log('remove clicked, blog.id: ', blog.id)
+    removeCallback(blog.id)
+
+  }
+
   return (
     <div className='blog'>
       <div style={hideWhenVisible}>
@@ -62,7 +69,8 @@ const Blog = ({ blog, makeLikeCallback }) => {
         {blog.title}&nbsp;<button onClick={toggleVisibility}>hide</button><br></br>
         {blog.url}<br></br>
         likes {blog.likes} <button onClick={like}>like</button><br></br>
-        {blog.author}
+        {blog.author}<br></br>
+        <button onClick={remove}>remove</button>
       </div>
     </div>
   )

@@ -45,6 +45,9 @@ const App = () => {
     } catch (error) {
       console.log('error in like')
       setErrorMessage('Error in function "like"')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     }
 
   }
@@ -55,6 +58,20 @@ const App = () => {
     window.location.reload(false)
   }
 
+  const remove = async(id) => {
+    console.log('App.js/remove, id: ', id)
+    try {
+      await blogService.remove(id)
+      await blogService.getAll().then(blogs =>
+        setBlogs(blogs))
+    } catch (error) {
+      console.log('error in App.js/remove: ', error)
+      setErrorMessage('Error in App.js / remove')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <h1>log in to application</h1>
@@ -91,6 +108,7 @@ const App = () => {
             key={blog.id}
             blog={blog}
             makeLikeCallback={like}
+            removeCallback={remove}
           />
         )}
 
