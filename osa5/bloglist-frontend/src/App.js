@@ -37,6 +37,16 @@ const App = () => {
     }
   }, [])
 
+  const like = async (id, blog) => {
+    try {
+      await blogService.update(id, blog)
+      await blogService.getAll().then(blogs =>
+        setBlogs(blogs))
+    } catch (error) {
+      console.log('error in like')
+    }
+
+  }
   const logout = () => {
     window.localStorage.removeItem(
       'loggedBlogAppUser'
@@ -74,7 +84,11 @@ const App = () => {
       <h2>blogs</h2>
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          makeLikeCallback={like}
+        />
       )}
 
     </div>
