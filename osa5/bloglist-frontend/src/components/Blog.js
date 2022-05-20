@@ -1,9 +1,10 @@
 import { useState } from 'react'
 //import blogService from '../services/blogs'
 
-const Blog = ({ blog, makeLikeCallback, removeCallback }) => {
+const Blog = ({ blog, makeLikeCallback, removeCallback, user }) => {
 
   const [visible, setVisible] = useState(false)
+  const [showRemove, setShowRemove] = useState(false)
 
   // eslint-disable-next-line no-unused-vars
   const [blogs, setBlogs] = useState([])
@@ -12,6 +13,9 @@ const Blog = ({ blog, makeLikeCallback, removeCallback }) => {
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
+
+  // const hideRemoveWhenVisible = { display: showRemove ? 'none' : '' }
+  const showRemoveWhenVisible = { display: showRemove ? '' : 'none' }
 
   /* useEffect(() => {
     blogService
@@ -23,6 +27,14 @@ const Blog = ({ blog, makeLikeCallback, removeCallback }) => {
  */
   const toggleVisibility = () => {
     setVisible(!visible)
+    // eslint-disable-next-line no-constant-condition
+    console.log('toggleVisibility: blog.user.username: ', blog.user.username)
+    console.log('toggleVisibility: user.username: ', user.username)
+    if ((blog.user.username === user.username)) {
+      setShowRemove(!showRemove)
+    } else {
+      setShowRemove(showRemove)
+    }
   }
 
   const like = async (event) => {
@@ -70,7 +82,7 @@ const Blog = ({ blog, makeLikeCallback, removeCallback }) => {
         {blog.url}<br></br>
         likes {blog.likes} <button onClick={like}>like</button><br></br>
         {blog.author}<br></br>
-        <button onClick={remove}>remove</button>
+        <button style={showRemoveWhenVisible} onClick={remove}>remove</button>
       </div>
     </div>
   )

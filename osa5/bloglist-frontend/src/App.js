@@ -32,6 +32,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
+      console.log('loggedUserJSON user: ', user)
       console.log('loggedUserJSON user.token: ', user.token)
       blogService.setToken(user.token)
     }
@@ -60,17 +61,26 @@ const App = () => {
 
   const remove = async(id) => {
     console.log('App.js/remove, id: ', id)
-    try {
-      await blogService.remove(id)
-      await blogService.getAll().then(blogs =>
-        setBlogs(blogs))
-    } catch (error) {
-      console.log('error in App.js/remove: ', error)
-      setErrorMessage('Error in App.js / remove')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+    const blogToBeRemoved = blogs.find(n => n.id === id)
+    if (window.confirm(`Remove blog ${blogToBeRemoved.title} by ${blogToBeRemoved.author}`)){
+
+      try {
+        await blogService.remove(id)
+        await blogService.getAll().then(blogs =>
+          setBlogs(blogs))
+        setErrorMessage(`Blog ${blogToBeRemoved.title} by ${blogToBeRemoved.author} succesfully removed`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      } catch (error) {
+        console.log('error in App.js/remove: ', error)
+        setErrorMessage(`Error removing blog: ${error}`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      }
     }
+
   }
   const loginForm = () => (
     <form onSubmit={handleLogin}>
@@ -109,6 +119,7 @@ const App = () => {
             blog={blog}
             makeLikeCallback={like}
             removeCallback={remove}
+            user={user}
           />
         )}
 
@@ -140,10 +151,12 @@ const App = () => {
 
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
+
     blogService
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
+        console.log('addBlog user: ', user)
         //setNewBlog('')
         setErrorMessage(`a new blog ${returnedBlog.title.toString()} by ${returnedBlog.author.toString()} added`)
         setTimeout(() => {
