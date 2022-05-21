@@ -33,6 +33,7 @@ const BlogForm = ({ createBlog }) => {
     console.log('BlogForm/addBlog: ', blogObject)
 
     createBlog(blogObject)
+    //window.location.reload(false)
   }
 
 
@@ -42,7 +43,7 @@ const BlogForm = ({ createBlog }) => {
       <form onSubmit={addBlog}>
         <label htmlFor="title">title</label>
         <input
-          id="input"
+          id="title"
           name="title"
           value={title}
           //value="hans"
