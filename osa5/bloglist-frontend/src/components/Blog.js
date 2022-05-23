@@ -88,4 +88,5 @@ const Blog = ({ blog, makeLikeCallback, removeCallback, user }) => {
   )
 }
 
+
 export default Blog
