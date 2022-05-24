@@ -74,7 +74,8 @@ const Blog = ({ blog, makeLikeCallback, removeCallback, user }) => {
   return (
     <div className='blog'>
       <div style={hideWhenVisible}>
-        {blog.title}&nbsp;
+        {blog.title}<br></br>
+        {blog.author}
         <button onClick={toggleVisibility}>view</button>
       </div>
       <div style={showWhenVisible}>
