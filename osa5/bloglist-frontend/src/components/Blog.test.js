@@ -5,8 +5,8 @@ import Blog from './Blog'
 
 test('renders content', () => {
   const blog = {
-    title: 'Title 20',
-    author: 'Hans Hokka 20',
+    title: 'Title',
+    author: 'Hans Hokka',
     url: 'www.fi',
     likes: 20
   }
@@ -24,7 +24,7 @@ test('renders content', () => {
   expect (div).not.toHaveTextContent(blog.url)
   expect (div).not.toHaveTextContent(blog.likes)
 
-  //screen.debug()
+  screen.debug()
   /*const titleElement = screen.getByText('Title 20')
   const authorElement = screen.getByText('Hans Hokka 20')
   const urlElement = screen.getByText('www.fi')

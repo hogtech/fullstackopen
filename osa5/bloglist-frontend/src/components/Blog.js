@@ -11,11 +11,11 @@ const Blog = ({ blog, makeLikeCallback, removeCallback, user }) => {
   // eslint-disable-next-line no-unused-vars
   const [errorMessage, setErrorMessage] = useState(null)
 
-  const hideWhenVisible = { display: visible ? 'none' : '' }
-  const showWhenVisible = { display: visible ? '' : 'none' }
+  //const hideWhenVisible = { display: visible ? 'none' : '' }
+  //const showWhenVisible = { display: visible ? '' : 'none' }
 
   // const hideRemoveWhenVisible = { display: showRemove ? 'none' : '' }
-  const showRemoveWhenVisible = { display: showRemove ? '' : 'none' }
+  //const showRemoveWhenVisible = { display: showRemove ? '' : 'none' }
 
   /* useEffect(() => {
     blogService
@@ -73,18 +73,25 @@ const Blog = ({ blog, makeLikeCallback, removeCallback, user }) => {
 
   return (
     <div className='blog'>
-      <div style={hideWhenVisible}>
-        {blog.title}<br></br>
+      <div>
+        {blog.title}
+        <br></br>
         {blog.author}
-        <button onClick={toggleVisibility}>view</button>
+        <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
       </div>
-      <div style={showWhenVisible}>
-        {blog.title}&nbsp;<button onClick={toggleVisibility}>hide</button><br></br>
-        {blog.url}<br></br>
-        likes {blog.likes} <button onClick={like}>like</button><br></br>
-        {blog.author}<br></br>
-        <button style={showRemoveWhenVisible} onClick={remove}>remove</button>
-      </div>
+      { visible && (
+        <>
+          {blog.url}
+          <br></br>
+          likes {blog.likes} <button onClick={like}>like</button><br></br>
+          <button onClick={remove}>remove</button>
+        </>
+      )}
+      {/* {blog.title}&nbsp;<button onClick={toggleVisibility}>hide</button><br></br> */}
+      {/* {blog.url}<br></br> */}
+
+      {/* {blog.author}<br></br> */}
+
     </div>
   )
 }
