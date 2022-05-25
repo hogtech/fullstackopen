@@ -84,7 +84,10 @@ const Blog = ({ blog, makeLikeCallback, removeCallback, user }) => {
           {blog.url}
           <br></br>
           likes {blog.likes} <button onClick={like}>like</button><br></br>
-          <button onClick={remove}>remove</button>
+          {blog.user.name === user.name
+            ?<button onClick={remove}>remove</button>
+            : null
+          }
         </>
       )}
       {/* {blog.title}&nbsp;<button onClick={toggleVisibility}>hide</button><br></br> */}
