@@ -1,15 +1,21 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
-import Blog from './Blog'
 import userEvent from '@testing-library/user-event'
+import Blog from './Blog'
+
 
 test('renders content', () => {
+
   const blog = {
     title: 'Title',
     author: 'Hans Hokka',
     url: 'www.fi',
-    likes: 20
+    likes: 20,
+    user: {
+      username: 'hhokka',
+      name: 'Hans Hokka'
+    }
   }
   const user = {
     username: 'hhokka',
@@ -33,23 +39,28 @@ test('renders content', () => {
   screen.debug()
 })
 
-test('clicking the button reveals url and likes', async () => {
+test('clicking the button reveals url and likes', () => {
+
   const blog = {
     title: 'Title',
     author: 'Hans Hokka',
     url: 'www.fi',
-    likes: 20
+    likes: 20,
+    user: {
+      username: 'hhokka',
+      name: 'Hans Hokka'
+    }
   }
-
   const user = {
     username: 'hhokka',
     name: 'Hans Hokka'
 
   }
+
   const { container } = render(
     <Blog blog={blog} user={user}/>
   )
-  const div = container.querySelector('.blog')
+  const div = container.querySelector('.all-visible')
   const button = screen.getByText('view')
   userEvent.click(button)
 
@@ -60,14 +71,18 @@ test('clicking the button reveals url and likes', async () => {
   screen.debug()
 })
 
-test('pressing button twice results in likes called two times', () => {
+
+test('pressing button twice results in likes called two times', async () => {
   const blog = {
     title: 'Title',
     author: 'Hans Hokka',
     url: 'www.fi',
-    likes: 20
+    likes: 20,
+    user: {
+      username: 'hhokka',
+      name: 'Hans Hokka'
+    }
   }
-
   const user = {
     username: 'hhokka',
     name: 'Hans Hokka'
@@ -75,11 +90,11 @@ test('pressing button twice results in likes called two times', () => {
   }
   const mockHandler = jest.fn()
   render(
-    <Blog blog={blog} user={user} like={mockHandler} />
+    <Blog blog={blog} user={user} makeLikeCallback={mockHandler} />
   )
+  const eventUser = userEvent.setup()
   const button = screen.getByText('like')
-  userEvent.click(button)
-  userEvent.click(button)
+  await eventUser.click(button)
+  await eventUser.click(button)
   expect(mockHandler.mock.calls).toHaveLength(2)
-}
-)
+})

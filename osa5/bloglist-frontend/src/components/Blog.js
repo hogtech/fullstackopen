@@ -1,8 +1,7 @@
+import React from 'react'
 import { useState } from 'react'
-//import blogService from '../services/blogs'
 
 const Blog = ({ blog, makeLikeCallback, removeCallback, user }) => {
-
   const [visible, setVisible] = useState(false)
   const [showRemove, setShowRemove] = useState(false)
 
@@ -11,8 +10,8 @@ const Blog = ({ blog, makeLikeCallback, removeCallback, user }) => {
   // eslint-disable-next-line no-unused-vars
   const [errorMessage, setErrorMessage] = useState(null)
 
-  //const hideWhenVisible = { display: visible ? 'none' : '' }
-  //const showWhenVisible = { display: visible ? '' : 'none' }
+  const hideWhenVisible = { display: visible ? 'none' : '' }
+  const showWhenVisible = { display: visible ? '' : 'none' }
 
   // const hideRemoveWhenVisible = { display: showRemove ? 'none' : '' }
   //const showRemoveWhenVisible = { display: showRemove ? '' : 'none' }
@@ -25,6 +24,8 @@ const Blog = ({ blog, makeLikeCallback, removeCallback, user }) => {
       })
   }, [])
  */
+
+
   const toggleVisibility = () => {
     setVisible(!visible)
     // eslint-disable-next-line no-constant-condition
@@ -70,34 +71,23 @@ const Blog = ({ blog, makeLikeCallback, removeCallback, user }) => {
     removeCallback(blog.id)
 
   }
-
-  return (
-    <div className='blog'>
-      <div>
-        {blog.title}
-        <br></br>
-        {blog.author}
-        <button onClick={toggleVisibility}>{visible ? 'hide' : 'view'}</button>
+  return(
+    <div>
+      <div style={hideWhenVisible} className='blog'>
+        {blog.title}&nbsp;{blog.author}
+        <button onClick={toggleVisibility}>view</button>
       </div>
-      { visible && (
-        <>
-          {blog.url}
-          <br></br>
-          likes {blog.likes} <button onClick={like}>like</button><br></br>
-          {blog.user.name === user.name
-            ?<button onClick={remove}>remove</button>
-            : null
-          }
-        </>
-      )}
-      {/* {blog.title}&nbsp;<button onClick={toggleVisibility}>hide</button><br></br> */}
-      {/* {blog.url}<br></br> */}
-
-      {/* {blog.author}<br></br> */}
-
+      <div style={showWhenVisible} className='all-visible'>
+        {blog.title}&nbsp;{blog.author} <button onClick={toggleVisibility}>hide</button> <br></br>
+        {blog.url}<br></br>
+        likes: {blog.likes} <button onClick={like}>like</button> <br></br>
+        {showRemove
+          ? <button onClick={remove}>remove</button>
+          : null
+        }
+      </div>
     </div>
   )
 }
-
 
 export default Blog
