@@ -64,7 +64,7 @@ const BlogForm = ({ createBlog }) => {
           value={url}
           onChange={handleUrlChange}
         /><br></br>
-        <label htmlFor='url'>likes</label>
+        <label htmlFor='likes'>likes</label>
         <input
           id="likes"
           name="likes"
