@@ -59,5 +59,10 @@ describe('When logged in', function() {
     cy.get('#like').click()
     cy.contains('likes: 11')
   })
+  it('A blog can be removed', function() {
+    cy.get('#view').click()
+    cy.get('#remove').click()
+    cy.contains('Blog Title created by Cypress by Hans Hokka succesfully removed')
+  })
 
 })

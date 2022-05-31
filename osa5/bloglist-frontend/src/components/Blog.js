@@ -82,7 +82,7 @@ const Blog = ({ blog, makeLikeCallback, removeCallback, user }) => {
         {blog.url}<br></br>
         likes: {blog.likes} <button id="like" onClick={like}>like</button> <br></br>
         {showRemove
-          ? <button onClick={remove}>remove</button>
+          ? <button id="remove" onClick={remove}>remove</button>
           : null
         }
       </div>
