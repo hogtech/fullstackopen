@@ -71,7 +71,7 @@ const BlogForm = ({ createBlog }) => {
           value={likes}
           onChange={handleLikesChange}
         /><br></br>
-        <button type="submit">create</button>
+        <button id="create" type="submit">create</button>
       </form>
     </div>
   )

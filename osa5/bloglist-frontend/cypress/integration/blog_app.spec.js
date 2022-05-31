@@ -33,3 +33,25 @@ describe('Login',function() {
     cy.contains('wrong username or password')
   })
 })
+
+
+describe('When logged in', function() {
+  beforeEach(function() {
+    cy.visit('http://localhost:3000')
+
+    cy.get('#username').type('hhokka')
+    cy.get('#password').type('salasana')
+    cy.get('#submit').click()
+  })
+
+  it('A blog can be created', function() {
+    cy.contains('create new blog').click()
+    cy.get('#title').type('Title created by Cypress')
+    cy.get('#author').type('Hans Hokka')
+    cy.get('#url').type('www.fi')
+    cy.get('#likes').type('10')
+    cy.get('#create').click()
+    cy.contains('a new blog Title created by Cypress by Hans Hokka added')
+    cy.contains('Title created by Cypress Hans Hokka')
+  })
+})
