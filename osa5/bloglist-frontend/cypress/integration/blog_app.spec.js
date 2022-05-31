@@ -16,14 +16,20 @@ describe('Blog app', function() {
     cy.contains('username')
     cy.contains('password')
   })
-  describe('Login',function() {
-    it('succeeds with correct credentials', function() {
-      cy.visit('http://localhost:3000')
-      cy.contains('')
-    })
+})
+describe('Login',function() {
+  it('succeeds with correct credentials', function() {
+    cy.get('#username').type('hhokka')
+    cy.get('#password').type('salasana')
+    cy.get('#submit').click()
+    cy.contains('Hans Hokka logged in')
+  })
 
-    it('fails with wrong credentials', function() {
-      // ...
-    })
+  it('fails with wrong credentials', function() {
+    cy.contains('logout').click()
+    cy.get('#username').type('hhokka_')
+    cy.get('#password').type('salasana_')
+    cy.get('#submit').click()
+    cy.contains('wrong username or password')
   })
 })
