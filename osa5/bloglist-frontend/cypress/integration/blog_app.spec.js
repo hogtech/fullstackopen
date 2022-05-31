@@ -54,4 +54,10 @@ describe('When logged in', function() {
     cy.contains('a new blog Title created by Cypress by Hans Hokka added')
     cy.contains('Title created by Cypress Hans Hokka')
   })
+  it('A blog can be liked', function() {
+    cy.get('#view').click()
+    cy.get('#like').click()
+    cy.contains('likes: 11')
+  })
+
 })

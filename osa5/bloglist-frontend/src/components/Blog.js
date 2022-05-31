@@ -75,12 +75,12 @@ const Blog = ({ blog, makeLikeCallback, removeCallback, user }) => {
     <div>
       <div style={hideWhenVisible} className='blog'>
         {blog.title}&nbsp;{blog.author}
-        <button onClick={toggleVisibility}>view</button>
+        <button id="view" onClick={toggleVisibility}>view</button>
       </div>
       <div style={showWhenVisible} className='all-visible'>
         {blog.title}&nbsp;{blog.author} <button onClick={toggleVisibility}>hide</button> <br></br>
         {blog.url}<br></br>
-        likes: {blog.likes} <button onClick={like}>like</button> <br></br>
+        likes: {blog.likes} <button id="like" onClick={like}>like</button> <br></br>
         {showRemove
           ? <button onClick={remove}>remove</button>
           : null
