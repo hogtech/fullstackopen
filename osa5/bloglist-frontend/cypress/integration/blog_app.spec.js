@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 describe('Blog app', function() {
   beforeEach(function() {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
@@ -64,5 +63,51 @@ describe('When logged in', function() {
     cy.get('#remove').click()
     cy.contains('Blog Title created by Cypress by Hans Hokka succesfully removed')
   })
+})
+describe('When displaying blogs', function() {
+  it ('Three blogs are created', function(){
+    cy.visit('http://localhost:3000')
+    cy.get('#username').type('hhokka')
+    cy.get('#password').type('salasana')
+    cy.get('#submit').click()
+    
+    cy.contains('create new blog').click()
+    cy.get('#title').type('Title 1')
+    cy.get('#author').type('Hans Hokka')
+    cy.get('#url').type('www.fi')
+    cy.get('#likes').type('1')
+    cy.get('#create').click()
 
+    cy.contains('create new blog').click()
+    cy.get('#title').type('Title 1').clear()
+    cy.get('#author').type('Hans Hokka').clear()
+    cy.get('#url').type('www.fi').clear()
+    cy.get('#likes').type('1').clear()
+    cy.get('#title').type('Title 2')
+    cy.get('#author').type('Hans Hokka')
+    cy.get('#url').type('www.fi')
+    cy.get('#likes').type('10')
+    cy.get('#create').click()
+
+    cy.contains('create new blog').click()
+    cy.get('#title').type('Title 1').clear()
+    cy.get('#author').type('Hans Hokka').clear()
+    cy.get('#url').type('www.fi').clear()
+    cy.get('#likes').type('1').clear() 
+    cy.get('#title').type('Title 3')
+    cy.get('#author').type('Hans Hokka')
+    cy.get('#url').type('www.fi')
+    cy.get('#likes').type('3')
+    cy.get('#create').click()
+  })
+    it('All three blogs are visible', function(){
+      cy.contains('Title 1')
+      cy.contains('Title 2')
+      cy.contains('Title 3')
+    })  
+    it('All the blogs are in order by the amount of likes', function(){
+      cy.get('.blog').eq(0).should('contain', 'Title 2')
+      cy.get('.blog').eq(1).should('contain', 'Title 3')
+      cy.get('.blog').eq(2).should('contain', 'Title 1')
+  })
 })
