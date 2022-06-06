@@ -24,6 +24,14 @@ const App = () => {
     console.log('Add anecdote ', content)
 
   } */
+  const compare = (anecdoteA, anecdoteB) => {
+    if (anecdoteA.votes < anecdoteB.votes) {
+      return -1
+    }
+    if (anecdoteA.votes > anecdoteB.votes) {
+      return 1
+    }
+  }
   const add = event => {
     event.preventDefault()
     console.log('prevented');
@@ -39,7 +47,7 @@ const App = () => {
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote =>
+      {anecdotes.sort(compare).map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
