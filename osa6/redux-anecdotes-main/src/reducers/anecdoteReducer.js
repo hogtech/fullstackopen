@@ -31,17 +31,12 @@ const reducer = (state = initialState, action) => {
         ...anecdoteToChange,
         votes: anecdoteToChange.votes + 1
       }
-      console.log('id: ', action.id);
-      console.log('VOTE')
-      console.log('...state: ', ...state)
-      //console.log('id: ', id);
-      console.log('action: ', action)
-      console.log('full', state.map(a => a.id !== id ? a : changedAnecdote));
-      //return [...state, action.votes]
-      console.log('state.map(a => a.id !== id ? a : changedAnecdote): ',
-        state.map(a => a.id !== id ? a : changedAnecdote));
+      state.map(a => a.id !== id ? a : changedAnecdote)
       return state.map(a => a.id !== id ? a : changedAnecdote)
-
+    case 'ADD_ANECDOTE':
+      const changedContent = asObject(action.content)
+      console.log('ADD: ', [...state, changedContent]);
+      return [...state, changedContent]
     default:
       return state
   }
