@@ -13,7 +13,7 @@ const AnecdoteList = (props) => {
     }
     return (
 
-        anecdotes.sort(compare).map(anecdote =>
+        [...anecdotes].sort(compare).map(anecdote =>
             <div key={anecdote.id}>
                 <div>
                     {anecdote.content}
