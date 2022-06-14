@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { vote } from "../reducers/anecdoteReducer"
 import { showNotification } from "../reducers/notificationReducer"
-const AnecdoteList = (props) => {
+const AnecdoteList = () => {
     let anecdotes = useSelector(state => state.anecdotes)
     const dispatch = useDispatch()
     const filter = useSelector(state => state.filter).toLowerCase()
