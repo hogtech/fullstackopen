@@ -2,8 +2,11 @@ import { useDispatch, useSelector } from "react-redux"
 import { vote } from "../reducers/anecdoteReducer"
 import { showNotification } from "../reducers/notificationReducer"
 const AnecdoteList = (props) => {
-    const anecdotes = useSelector(state => state.anecdotes)
+    let anecdotes = useSelector(state => state.anecdotes)
     const dispatch = useDispatch()
+    const filter = useSelector(state => state.filter).toLowerCase()
+    anecdotes = anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter))
+    console.log('filtered: ', anecdotes);
     const compare = (anecdoteA, anecdoteB) => {
         if (anecdoteA.votes > anecdoteB.votes) {
             return -1
