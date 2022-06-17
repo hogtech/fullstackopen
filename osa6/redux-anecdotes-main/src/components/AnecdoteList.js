@@ -26,7 +26,7 @@ const AnecdoteList = () => {
          setTimeout(() => {
              dispatch(showNotification(''))
          }, '5000') */
-        dispatch(setNotification(notificationMessage, 2))
+        dispatch(setNotification(notificationMessage, 5))
     }
     return (
 
