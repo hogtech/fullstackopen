@@ -9,9 +9,14 @@ export const useField = (type) => {
     }
     console.log('type: ', type)
 
+    const reset = (event) => {
+        setValue('')
+    }
+
     return {
         type,
         value,
-        onChange
+        onChange,
+        reset
     }
 }
