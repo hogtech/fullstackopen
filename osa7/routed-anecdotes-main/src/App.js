@@ -108,9 +108,6 @@ const CreateNew = (props) => {
         </div>
         <button>create</button>
       </form>
-      <div>
-        {content.value}
-      </div>
     </div>
   )
 
