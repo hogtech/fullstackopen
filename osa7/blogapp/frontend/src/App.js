@@ -12,10 +12,16 @@ import userService from './services/user'
 
 import { Button } from 'react-bootstrap'
 
+import { createNotification } from './reducers/notificationReducer'
+import { useSelector, useDispatch } from 'react-redux'
+
 const App = () => {
+    const dispatch = useDispatch()
+
+
     const [blogs, setBlogs] = useState([])
     const [user, setUser] = useState(null)
-    const [notification, setNotification] = useState(null)
+    //const [notification, setNotification] = useState(null)
     const blogFormRef = useRef()
     const byLikes = (b1, b2) => b2.likes > b1.likes ? 1 : -1
 
@@ -95,15 +101,20 @@ const App = () => {
     }
 
     const notify = (message, type = 'info') => {
-        setNotification({ message, type })
+        /*   setNotification({ message, type })
+          setTimeout(() => {
+              setNotification(null)
+          }, 5000) */
+        dispatch(createNotification({ message, type }))
         setTimeout(() => {
-            setNotification(null)
-        }, 5000)
+            dispatch(createNotification('', type))
+        }, 5000
+        )
     }
 
     if (user === null) {
         return <div className='container'>
-            <Notification notification={notification} />
+            <Notification />
             <LoginForm onLogin={login} />
         </div>
     }
@@ -112,7 +123,7 @@ const App = () => {
         <div className='container'>
             <h2>blogs</h2>
 
-            <Notification notification={notification} />
+            <Notification />
 
             <div>
                 {user.name} logged in&nbsp;
