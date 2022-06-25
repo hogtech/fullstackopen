@@ -14,22 +14,26 @@ import { Button } from 'react-bootstrap'
 
 import { createNotification } from './reducers/notificationReducer'
 import { useSelector, useDispatch } from 'react-redux'
+import { initializeBlogs, createBlog } from './reducers/blogReducer'
 
 const App = () => {
     const dispatch = useDispatch()
 
-
-    const [blogs, setBlogs] = useState([])
+    //const [blogs, setBlogs] = useState([])
     const [user, setUser] = useState(null)
     //const [notification, setNotification] = useState(null)
     const blogFormRef = useRef()
     const byLikes = (b1, b2) => b2.likes > b1.likes ? 1 : -1
+    //dispatch(createBlogList(blogs))
+    const blogs = useSelector(state => state.blogs)
 
     useEffect(() => {
-        blogService.getAll().then(blogs =>
-            setBlogs(blogs.sort(byLikes))
-        )
-    }, [])
+        dispatch(initializeBlogs())
+        console.log('app.js / initializeBlogs here');
+        /*  blogService.getAll().then(blogs =>
+             setBlogs(blogs.sort(byLikes))
+         ) */
+    }, [dispatch])
 
     useEffect(() => {
         const userFromStorage = userService.getUser()
@@ -56,14 +60,12 @@ const App = () => {
         notify('good bye!')
     }
 
-    const createBlog = async (blog) => {
-        blogService.create(blog).then(createdBlog => {
-            notify(`a new blog '${createdBlog.title}' by ${createdBlog.author} added`)
-            setBlogs(blogs.concat(createdBlog))
-            blogFormRef.current.toggleVisibility()
-        }).catch(error => {
-            notify('creating a blog failed: ' + error.response.data.error, 'alert')
-        })
+    const addBlog = (blog) => {
+        console.log('inside addBlog')
+        dispatch(createBlog(blog))
+        notify(`a new blog '${blog.title}' by ${blog.author} added`)
+        //setBlogs(blogs.concat(blog))
+        blogFormRef.current.toggleVisibility()
     }
 
     const removeBlog = (id) => {
@@ -79,7 +81,7 @@ const App = () => {
             const updatedBlogs = blogs
                 .filter(b => b.id !== id)
                 .sort(byLikes)
-            setBlogs(updatedBlogs)
+            //setBlogs(updatedBlogs)
         })
     }
 
@@ -96,7 +98,7 @@ const App = () => {
             const updatedBlogs = blogs
                 .map(b => b.id === id ? updatedBlog : b)
                 .sort(byLikes)
-            setBlogs(updatedBlogs)
+            //setBlogs(updatedBlogs)
         })
     }
 
@@ -130,9 +132,9 @@ const App = () => {
                 <Button variant='info' onClick={logout}>logout</Button>
             </div>
 
-            <Togglable buttonLabel='new note' ref={blogFormRef}>
+            <Togglable buttonLabel='new blog' ref={blogFormRef}>
                 <NewBlogForm
-                    onCreate={createBlog}
+                    onCreate={addBlog}
                 />
             </Togglable>
 

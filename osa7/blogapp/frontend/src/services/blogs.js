@@ -16,7 +16,7 @@ const getAll = () => {
     return request.then(response => response.data)
 }
 
-const create = async newObject => {
+const createNew = async newObject => {
     const response = await axios.post(baseUrl, newObject, config())
     return response.data
 }
@@ -30,4 +30,4 @@ const remove = (id) => {
     return axios.delete(`${baseUrl}/${id}`, config())
 }
 
-export default { getAll, create, update, remove }
+export default { getAll, createNew, update, remove }

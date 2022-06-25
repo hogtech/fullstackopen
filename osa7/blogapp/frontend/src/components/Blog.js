@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { ListGroup, Button } from 'react-bootstrap'
+import { useState } from 'react'
 import '../index.css'
+import { createBlogList } from '../reducers/blogReducer'
 
 const BlogDetails = ({ blog, visible, likeBlog, removeBlog, own }) => {
     if (!visible) return null
@@ -27,8 +29,24 @@ const BlogDetails = ({ blog, visible, likeBlog, removeBlog, own }) => {
 }
 
 const Blog = ({ blog, likeBlog, removeBlog, user }) => {
+    //let blog1 = useSelector(state => state.blogs)
+    //blog1 = blog1.blog1
+    //console.log('blog1 state: ', blog1);
+    //blog = blog1[0]
+    /*     const dispatch = useDispatch()
+        dispatch(blogReducer(blog))
+        dispatch(blogReducer(likeBlog))
+        dispatch(blogReducer(removeBlog))
+        dispatch(blogReducer(user)) */
+    /*  blog = useSelector(state => state.blog)
+     likeBlog = useSelector(state => state.likeBlog)
+     removeBlog = useSelector(state => state.removeBlog)
+     user = useSelector(state => state.user) */
+    //const dispatch = useDispatch()
+    //dispatch(createBlogList("blog"))
+    //dispatch(createNotification({ message, type }))
+    //console.log('Blog blog1: ', blog1);
     const [visible, setVisible] = useState(false)
-
 
 
     return (
