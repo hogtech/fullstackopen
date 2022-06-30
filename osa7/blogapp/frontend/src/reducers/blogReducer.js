@@ -6,7 +6,6 @@ const blogSlice = createSlice({
     initialState: [],
     reducers: {
         makeLike(state, action) {
-            console.log('action.payload: ', JSON.stringify(action.payload))
             //console.log('state: ', state);
             return state.map((element) =>
                 action.payload.id !== element.id ?
