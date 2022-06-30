@@ -14,7 +14,8 @@ import { Button } from 'react-bootstrap'
 
 import { createNotification } from './reducers/notificationReducer'
 import { useSelector, useDispatch } from 'react-redux'
-import { initializeBlogs, createBlog } from './reducers/blogReducer'
+import { initializeBlogs, createBlog, addLike, removeB } from './reducers/blogReducer'
+import store from './store'
 
 const App = () => {
     const dispatch = useDispatch()
@@ -26,7 +27,8 @@ const App = () => {
     const byLikes = (b1, b2) => b2.likes > b1.likes ? 1 : -1
     //dispatch(createBlogList(blogs))
     const blogs = useSelector(state => state.blogs)
-
+    let blogsArray = [...blogs]
+    let blogsInOrder = blogsArray.sort(byLikes)
     useEffect(() => {
         dispatch(initializeBlogs())
         console.log('app.js / initializeBlogs here');
@@ -76,30 +78,36 @@ const App = () => {
         if (!ok) {
             return
         }
-
-        blogService.remove(id).then(() => {
-            const updatedBlogs = blogs
-                .filter(b => b.id !== id)
-                .sort(byLikes)
-            //setBlogs(updatedBlogs)
-        })
+        notify(`removed ${toRemove.title} by ${toRemove.author}`)
+        dispatch(removeB(toRemove))
     }
 
+
     const likeBlog = async (id) => {
+
         const toLike = blogs.find(b => b.id === id)
-        const liked = {
+        console.log('likeBlog toLike: ', toLike)
+        dispatch(addLike(toLike))
+        notify(`you liked '${toLike.title}' by ${toLike.author}`)
+        const updatedBlogs = blogs
+            .map(b => b.id === id ? toLike : b)
+            .sort(byLikes)
+        console.log('likeBlog byLikes: ', byLikes)
+        console.log('likeBlog blogs: ', blogs)
+        console.log('likeBlog updatedBlogs: ', updatedBlogs);
+        /* const liked = {
             ...toLike,
             likes: (toLike.likes || 0) + 1,
             user: toLike.user.id
         }
-
+    
         blogService.update(liked.id, liked).then(updatedBlog => {
             notify(`you liked '${updatedBlog.title}' by ${updatedBlog.author}`)
             const updatedBlogs = blogs
                 .map(b => b.id === id ? updatedBlog : b)
                 .sort(byLikes)
             //setBlogs(updatedBlogs)
-        })
+        }) */
     }
 
     const notify = (message, type = 'info') => {
@@ -139,7 +147,7 @@ const App = () => {
             </Togglable>
 
             <div id='blogs'>
-                {blogs.map(blog =>
+                {blogsInOrder.map(blog =>
                     <Blog
                         key={blog.id}
                         blog={blog}

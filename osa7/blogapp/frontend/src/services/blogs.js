@@ -27,7 +27,18 @@ const update = (id, newObject) => {
 }
 
 const remove = (id) => {
+    console.log('blogs.js, id: ', id);
     return axios.delete(`${baseUrl}/${id}`, config())
 }
 
-export default { getAll, createNew, update, remove }
+const like = async (id) => {
+    console.log('like config ', config())
+
+    const res = await axios.put(
+        `${baseUrl}/${id}`, config()
+    )
+    console.log('id: ', id)
+    console.log('like res: ', res.data);
+    return res.data
+}
+export default { getAll, createNew, update, remove, like }

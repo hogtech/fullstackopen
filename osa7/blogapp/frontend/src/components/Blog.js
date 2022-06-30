@@ -21,9 +21,10 @@ const BlogDetails = ({ blog, visible, likeBlog, removeBlog, own }) => {
                 {blog.likes} likes <Button variant="info" onClick={() => likeBlog(blog.id)}>like</Button>
             </div>
             {addedBy}
-            {own && <button onClick={() => removeBlog(blog.id)}>
+
+            {own && <Button variant="info" onClick={() => removeBlog(blog.id)}>
                 remove
-            </button>}
+            </Button>}
         </div>
     )
 }

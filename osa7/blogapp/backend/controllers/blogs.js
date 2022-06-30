@@ -49,6 +49,7 @@ router.delete('/:id', async (request, response) => {
 })
 
 router.put('/:id', async (request, response) => {
+    console.log('backend put request.body: ', request.body)
     const blog = request.body
 
     const updatedBlog = await Blog
