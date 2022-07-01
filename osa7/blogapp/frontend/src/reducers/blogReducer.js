@@ -14,25 +14,25 @@ const blogSlice = createSlice({
             )
         },
         appendBlog(state, action) {
-            console.log('appendBlog: ', action.payload);
+            // console.log('appendBlog: ', action.payload);
             state.push(action.payload)
         },
         setBlogs(state, action) {
-            console.log('setBlogs: ', action.payload);
+            //console.log('setBlogs: ', action.payload);
             return action.payload
         },
         del(state, action) {
-            console.log('blogSlice.remove.action.payload.id: ', action.payload.id)
+            //console.log('blogSlice.remove.action.payload.id: ', action.payload.id)
             const newState = state.filter(element => element.id !== action.payload.id)
-            console.log('oldState: ', JSON.stringify(state))
-            console.log('newState: ', JSON.stringify(newState))
+            //console.log('oldState: ', JSON.stringify(state))
+            //console.log('newState: ', JSON.stringify(newState))
             return newState
         }
     }
 })
 
 export const initializeBlogs = () => {
-    console.log('initializeBlogs: ')
+    //console.log('initializeBlogs: ')
     return async dispatch => {
         const blogs = await blogService.getAll()
         dispatch(setBlogs(blogs))
@@ -40,7 +40,7 @@ export const initializeBlogs = () => {
 }
 
 export const createBlog = content => {
-    console.log('createBlog: ', content)
+    //console.log('createBlog: ', content)
     return async dispatch => {
         const newBlog = await blogService.createNew(content)
         dispatch(appendBlog(newBlog))

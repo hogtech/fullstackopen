@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 const Notification = ({ notification }) => {
     notification = useSelector(state => state)
     notification = notification.notification
-    console.log('notification state: ', notification);
+    //console.log('notification state: ', notification);
     if (notification === '') {
         return null
     }

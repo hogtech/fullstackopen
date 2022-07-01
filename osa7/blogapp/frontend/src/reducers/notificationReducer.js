@@ -1,5 +1,5 @@
 const notificationReducer = (state = '', action) => {
-    console.log('notificationReducer action: ', action);
+    //console.log('notificationReducer action: ', action);
     switch (action.type) {
         case 'NEW_NOTIFICATION':
             return action.data
@@ -9,7 +9,7 @@ const notificationReducer = (state = '', action) => {
 }
 
 export const createNotification = (content) => {
-    console.log('createNotification content:', content);
+    //console.log('createNotification content:', content);
     return {
         type: 'NEW_NOTIFICATION',
         data: content
