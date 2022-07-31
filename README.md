@@ -1,3 +1,3 @@
 # fullstackopen
 
-Repo for completed excercises for the course Full Stack Open
+This is the repository for Full Stack Open 2022 course assignments.
